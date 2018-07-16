@@ -1,7 +1,16 @@
 ---
 layout: page
-title: 데이터 과학
+title: R 개발자를 위한 tip 모음
 ---
+
+
+## 목차
+
+1. **[데이터 과학과 R 언어](#001_ds-r-lang.html)**
+
+
+
+
 
 ### R, RStudio, `tidyverse`, 스파크, AWS 와 함께하는 데이터 과학 
 
