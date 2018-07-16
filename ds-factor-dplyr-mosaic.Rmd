@@ -1,0 +1,329 @@
+---
+layout: page
+title: xwMOOC 기계학습
+subtitle: 범주형 데이터 시각화 기초
+date: 2017-07-23
+author: xwMOOC
+output:
+  html_document: 
+    keep_md: yes
+    toc: yes
+  pdf_document:
+    latex_engine: xelatex
+mainfont: NanumGothic
+---
+ 
+``` {r, include=FALSE}
+source("tools/chunk-options.R")
+
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE, fig.width=12, fig.height=10)
+
+library(tidyverse)
+library(datasets)
+library(forcats)
+library(vcd)
+library(gridExtra)
+library(knitr)
+library(stringr)
+library(FactoMineR)
+library(ggplot2)
+library(ggthemes)
+library(ggmosaic) # devtools::install_github("haleyjeppson/ggmosaic")
+library(forcats)
+library(extrafont)
+loadfonts()
+
+dat <- read_csv("data/2015년+범죄자+범행시+정신상태.csv", locale=locale(encoding = "EUC-KR"))
+```
+
+> ### 학습 목표 {.getready}
+>
+> * 표(table) 데이터를 깔끔한 데이터(tidy data)로 변환한다.
+> * 깔끔한 데이터를 범주형 데이터, 즉 요인형 자료구조로 변환시킨다.
+> * 범주형 데이터를 Base 시각화 시스템 `vcd` 팩키지 `mosaic()` 함수, 그래프 문법 geom_mosaic()을 통해 시각화한다.
+> * 공공데이터포털 범죄통계 데이터를 통해 범주형 데이터를 탐색적으로 분석한다.
+> * 탐색적 데이터 분석을 위한 기초 도구로 대응분석을 활용한다.
+
+
+## 1. 범주형 자료 처리를 위한 자료구조와 시각화 {#intro}
+
+일상적으로 가장 많이 접하는 데이터 형태 중의 하나가 표(Table) 데이터다. 
+하지만, 역설적으로 가장 적은 데이터 활용법이 공개된 것도 사실이다. 
+통계학과에서도 연속형 데이터는 많이 다루지만, 범주형 데이터를 충분히 이해하고 실습해 본 경험을 갖고 있는 분은 드물다.
+
+사실 범주형 자료를 시각화하고 다양한 표형태로 나타내는데 다양한 지식이 필요하다.
+
+- `table` 자료형
+- 깔끔한 데이터(tidy data) 개념
+- `vcd` 팩키지 `mosaic()` 함수 사용 및 해석
+- 범주형 자료형 `forcats` 팩키지 활용
+- 표를 웹에 표현하기 위한 `kable` 팩키지와 마크다운 언어
+- 범주형 데이터를 탐색적으로 분석하기 위한 대응분석을 통한 주성분 분석의 이해
+
+즉, 일반적이 표형식 데이터를 깔끔한 데이터(tidy data) 형태로 변환을 시키고 나서 탐색적 데이터 분석과정을 거쳐 최종 결과물을 생성시킨다.
+그래프 문법(ggplot)을 활용하여 범주형 데이터를 가장 잘 요약할 수 있는 그래프를 만들고 나서, 대응분석(Correspondance Analysis)를 통해 
+한장의 그래프로 범주형 데이터를 통해 표현된 자료를 추상화하고 해석한다.
+
+<img src="fig/from_categorical_data_to_ca.png" alt="모자이크 플롯과 자료구조" width="97%" />
+
+## 2. 표(table) 데이터를 자유로이 작업 {#tbl-data}
+
+상기 기반지식을 바탕으로 R `datasets` 팩키지에 포함된 `HairEyeColor` 데이터셋을 가지고 데이터 분석 작업을 시작한다.
+
+### 2.1. 환경설정  {#tbl-setup}
+
+범주형 데이터 분석 및 시각화 산출물 생성에 필요한 팩키지를 불러온다.
+
+``` {r mosaic-plot-setup, warning=FALSE, message=FALSE, eval=FALSE}
+# 0. 데이터 가져오기 ----------------------------------------------
+library(tidyverse)
+library(datasets)
+library(forcats)
+library(ggmosaic)
+library(vcd)
+library(gridExtra)
+library(knitr)
+```
+
+### 2.2. 표(table) 데이터 {#tbl-dplyr-data}
+
+범주형 데이터로 유명한 `HairEyeColor` 데이터셋을 가져온다. `HairEyeColor` 데이터셋은 데이터프레임이 아니고 
+`table` 형태 데이터다. 익숙한 데이터프레임 자료형으로 작업하는데 필요한 함수가 있다.
+
+- tbl_df() 
+- as_data_frame()
+
+tbl_df(), as_data_frame() 함수는 표(table) 자료형을 데이터프레임으로 변환시키는 유용한 함수다.
+
+``` {r mosaic-plot-import-munging, warning=FALSE, message=FALSE}
+data("HairEyeColor")
+
+# 1. 데이터 변환 ----------------------------------------------
+## 1.1 표형식 데이터 --> 깔끔한 데이터 ------------------------
+
+hair_eye_df <- apply(HairEyeColor, c(1, 2), sum)
+
+kable(hair_eye_df, digits=0)
+
+tbl_df <- as_data_frame(HairEyeColor)
+
+tbl_df(HairEyeColor)
+
+# kable(tbl_df)
+```
+
+### 2.3. 깔끔한 데이터 {#tbl-tidy-data}
+
+데이터프레임으로 전환되면 long 형태 데이터프레임이라 원 표(table)과비교하려면 `spread` 함수와 비교한다.
+
+``` {r mosaic-plot-tidy-data, warning=FALSE, message=FALSE}
+## 1.2 Long & Wide 데이터 형식 ------------------------
+
+long_df <- tbl_df %>% group_by(Hair, Eye) %>% 
+    summarise(cnt = sum(n))
+
+# 비교
+# hair_eye_df
+long_df %>% spread(Eye, cnt) %>% kable(digits=0)
+```
+
+### 2.4. 단변량 범주형 데이터 시각화 {#tbl-univariate}
+
+깔끔한 데이터프레임으로 작업이 되면 변수를 각 자료형에 맞춰 변환을 시킨다.
+이런 과정에 도입되는 팩키지가 `forcats` 팩키지의 다양한 요인형 데이터 처리 함수다.
+요인형 자료형은 다른 프로그래밍 언어에는 개념이 존재하지만, 실제 활용되는 경우도 많지 않고 R처럼 다양한 기능을 제공하는 경우는 드물다.
+
+``` {r mosaic-plot-univariate-viz, warning=FALSE, message=FALSE}
+## 1.3 범주형 데이터 ------------------------
+
+long_df %>% ungroup() %>%  mutate(Hair = factor(Hair)) %>% 
+    group_by(Hair) %>% 
+    summarise(hair_sum = sum(cnt)) %>% 
+        ggplot(aes(hair_sum, fct_reorder(Hair, hair_sum))) + geom_point()
+
+long_df %>% ungroup() %>%  mutate(Eye = factor(Eye)) %>% 
+    group_by(Eye) %>% 
+    summarise(eye_sum = sum(cnt)) %>% 
+    ggplot(aes(eye_sum, fct_reorder(Eye, eye_sum))) + geom_point()
+
+long_df %>% ungroup() %>%  mutate(Eye = factor(Eye),
+                                  Hair = factor(Hair)) %>% 
+    group_by(Eye, Hair) %>% 
+    summarise(eye_hair_sum = sum(cnt)) %>% 
+    tidyr::unite(eye_hair, Eye, Hair) %>% 
+    ggplot(aes(eye_hair_sum, fct_reorder(eye_hair, eye_hair_sum))) + geom_point() 
+```
+
+## 3. 모자이크 플롯 {#tbl-mosaic}
+
+`ggplot`에서도 모자이크 플롯을 구현할 수 있지만, 잔차(residual)를 반영하여 시각화하는 기능을 제공하지 않고 있다.
+하지만, [`ggmosaic`](https://cran.r-project.org/web/packages/ggmosaic/) 팩키지를 활용하면 모자이크 플롯을 그래프 문법에 맞춰 구현이 가능하다.
+`geom_mosaic()` 함수를 사용한다. 
+
+하지만, 잔차(residual)를 반영하여 시각화 그래프를 생성시키려면 표(table) 자료형으로 `vcd` 팩키지에서 제공하는 `mosaic()` 함수에 인자로 넘겨야 한다.
+
+``` {r mosaic-plot-viz, warning=FALSE, message=FALSE}
+# 2. 모자이크 플롯 ------------------------
+
+long_df %>% ungroup() %>%  mutate(Eye = factor(Eye),
+                                  Hair = factor(Hair)) %>% 
+    ggplot() +
+    geom_mosaic(aes(weight=cnt,x=product(Hair),fill=Eye))
+
+# 3. 모자이크 플롯 통계모형 ------------------------
+
+vcd::mosaic(HairEyeColor, shade=TRUE, legend=TRUE)
+
+xtabs(cnt ~ Hair + Eye, long_df)
+
+vcd::mosaic(xtabs(cnt ~ Hair + Eye, long_df), shade = TRUE, legend=TRUE)
+
+# vcd::mosaic(hair_eye_df, shade = TRUE, legend=TRUE)
+```
+
+> ### 데이터 파일이 깨지는 경우 - 인코딩
+> 
+> RStudio로 데이터분석 작업을 할 경우 `utf-8`이 기본이라 인코딩이 깨져 문제가 되는 경우가 많다. 
+> 특히, 대부분의 정부기관 데이터는 윈도우를 기본 운영체제를 가정한 경우가 많아,
+> 윈도우에 최적화된 인코딩을 채택된다. 따라서 이런 문제를 인정하고 
+> `read.csv()` 함수를 사용하는 경우 `encoding = "EUC-KR"` 인자를 넣어주고,
+> tidyverse 팩키지 `read_csv()` 함수를 사용하는 경우 `locale=locale(encoding = "EUC-KR")`을 설정하면 깔끔하게 
+> R 에서 작업할 수 있는 형태로 데이터를 받아 들릴 수 있다.
+
+## 4. 사례 - 범죄통계(범죄자 범행시 정신상태) {#case-study-crime}
+
+### 4.1. 공동데이터 포탈 범죄데이터 {#case-study-crime-opendata}
+
+[범죄통계] 범죄자 범행시 정신상태 최신 데이터를 다운로드 받아 분석한다.
+[범죄자 범행시 정신상태, 범죄통계(2015)](https://www.data.go.kr/dataset/3074473/fileData.do) 데이터를 csv 파일 형태로 로컬 컴퓨터에 
+다운로드 받아 저장한다.
+
+
+``` {r korean-crime-setup, eval=FALSE}
+# 0. 환경설정 ---------------------------------
+library(tidyverse)
+library(stringr)
+library(FactoMineR)
+library(ggplot2)
+library(ggthemes)
+library(ggmosaic) # devtools::install_github("haleyjeppson/ggmosaic")
+library(extrafont)
+library(forcats)
+loadfonts()
+
+# 1. 데이터 가져오기 --------------------------
+dat <- read_csv("data/2015년+범죄자+범행시+정신상태.csv", locale=locale(encoding = "EUC-KR"))
+```
+
+### 4.2. 범죄통계 데이터 정제 {#case-study-crime-wrangling}
+
+데이터 분석의 다음 단계로 늘 있는 일이지만 데이터와 사투를 벌여야 한다.
+필요없는 데이터는 제거하고 다음 단계 시각화, 기초통계, 모형 개발에 맞는 형태로 데이터를 정제한다.
+
+``` {r korean-crime-wrangling}
+# 2. 데이터 정제과정 --------------------------
+tidy_tmp_dat <- dat %>% gather(정신상태, 범죄건수, -범죄대분류, -범죄중분류)
+
+tidy_2015_dat <- tidy_tmp_dat %>% filter(!정신상태 %in% c("남자(계)", "여자(계)")) %>% 
+    mutate(성별 = ifelse(str_detect(정신상태, "남자"), "남자", "여자")) %>% 
+    mutate(정신상태 = str_replace_all(정신상태, "남자|여자", "")) %>% 
+    mutate(정신상태 = str_replace_all(정신상태, "[^0-9a-zA-Z가-흫]+", "")) %>% 
+    mutate(범죄정신상태 = case_when(
+        str_detect(정신상태, "정신") ~ "정신문제",
+        str_detect(정신상태, "월경") ~ "미상",
+        TRUE ~ 정신상태
+    )) %>% 
+    mutate(범죄건수 = as.numeric(범죄건수))
+
+tidy_2015_df <- tidy_2015_dat %>% 
+    select(-정신상태) %>% 
+    mutate(범죄건수 = as.numeric(범죄건수),
+           범죄정신상태 = factor(범죄정신상태, levels=c("정상", "주취", "정신문제", "미상")),
+           범죄중분류 = factor(범죄중분류),
+           범죄대분류 = factor(범죄대분류),
+           성별 = factor(성별)) %>% 
+    mutate(범죄건수 = ifelse(is.na(범죄건수),0, 범죄건수))
+
+DT::datatable(tidy_2015_dat) %>% 
+    DT::formatRound(c("범죄건수"), digits=0)
+```
+
+### 4.3. 범죄통계 시각화 {#case-study-crime-ggplot}
+
+데이터가 준비되었으면, ggplot에 입력으로 넣어, 전체 범죄건수를 범죄자 범행시 정신상태별로 살펴본다.
+다음으로 남녀별로 구분하여 살펴보고, 마지막으로 범죄자 범행시 정신상태별로 나누어서 
+성별로 구분하여 범죄중분류 기준으로 살펴본다. 
+주취, 즉 술을 마셨을 경우 강력범죄, 지능범죄, 폭력범죄가 높은 것이 나타난다.
+또한, 마약범죄는 정신문제와 연관이 크고 절도, 폭력 등 범죄와 함께 높아지는 것이 눈에 띈다.
+
+``` {r korean-crime-ggplot}
+# 3. 시각화 --------------------------
+## 3.1. 범죄대분류에 따른 범죄발생 건수
+tidy_2015_df %>%
+    ggplot(data = ., aes(x = fct_reorder(범죄대분류, 범죄건수, .desc = FALSE, fun=sum), y=범죄건수, fill=범죄정신상태)) +
+    geom_bar(stat="identity") +
+    labs(x="", y="범죄건수", title='') +
+    theme_bw(base_family="NanumGothic") +
+    theme(legend.position='top', legend.direction='horizontal') +
+    scale_fill_brewer(palette="Set2") +
+    scale_y_continuous(labels=scales::comma) +
+    coord_flip()
+
+## 3.2. 남녀별 정신상태별 범죄건수
+tidy_2015_df %>%
+    ggplot(data = ., aes(x = fct_reorder(범죄대분류, 범죄건수, .desc = FALSE, fun=sum), y=범죄건수, fill=범죄정신상태)) +
+    geom_bar(stat="identity") +
+    labs(x="", y="범죄건수", title='') +
+    theme_bw(base_family="NanumGothic") +
+    theme(legend.position='top', legend.direction='horizontal') +
+    scale_fill_brewer(palette="Set2") +
+    scale_y_continuous(labels=scales::comma) +
+    coord_flip() +
+    facet_wrap(~성별, scale="free")
+
+## 3.3. 정신상태별 남녀 범죄건수
+tidy_2015_df %>%
+    ggplot(data = ., aes(x = fct_reorder(범죄대분류, 범죄건수, .desc = FALSE, fun=sum), y=범죄건수, fill=성별)) +
+    geom_bar(stat="identity") +
+    labs(x="", y="", title='') +
+    theme_bw(base_family="NanumGothic") +
+    theme(legend.position='top', legend.direction='horizontal') +
+    scale_fill_brewer(palette="Set2") +
+    scale_y_continuous(labels=scales::comma) +
+    coord_flip() +
+    facet_wrap(~범죄정신상태, scale="free")
+```
+
+### 4.4. 범죄통계 대응분석 {#case-study-crime-ca}
+
+범주형 데이터를 관심을 갖는 관점별로 데이터를 살펴보는 대신, 주성분 분석을 통해 범죄데이터를 해석하는 것도 가능하다.
+동일한 데이터를 대응분석에 맞춰 데이터를 전처리하고 나서 이를 `FactoMineR` 팩키지 `CA()` 함수에 넣어 시각화를 한다.
+
+2차원 평면에 축약할 경우 약 90% 정보(89.411)를 담을 수 있고, X축(Dim 1) 방향은 남녀 모두 주취와 강력범죄가 연관되어 범죄자 범행시 정신상태가 많이 투영되어 있고,
+Y축(Dim 2)은 직권남용/유기, 경제범죄와 반대쪽에 마약, 보건 등이 정신문제와 연관이 되어 있는 것이 두드려저 나타난다.
+
+``` {r korean-crime-ca}
+# 2. 데이터 정제과정 --------------------------
+ca_dat <- dat %>%
+    mutate_at(vars(-범죄대분류, -범죄중분류), funs(as.numeric))
+ca_dat[is.na(ca_dat)] <- 0
+
+tidy_2015_ca_df <- ca_dat %>% select(-`남자(계)`, -`여자(계)`) %>% 
+    mutate(`남자(정신문제)` = `남자(정신이상)` + `남자(정신박약)`+`남자(기타정신장애)`,
+           `여자(정신문제)` = `여자(정신이상)` + `여자(정신박약)`+`여자(기타정신장애)` ) %>% 
+    rename(`여자(미상)`=미상) %>% 
+    select(범죄중분류, `남자(정상)`, `여자(정상)`, `남자(정신문제)`, `여자(정신문제)`,
+                `남자(미상)`, `여자(미상)`,
+                `남자(주취)`, `여자(주취)`) %>% 
+    column_to_rownames(var="범죄중분류")
+
+# 3. CA --------------------------
+crime_2015_ca <- CA(tidy_2015_ca_df, graph=FALSE)
+summary(crime_2015_ca)
+
+par(mfrow=c(1,2))
+plot(crime_2015_ca, cex=0.7, autoLab = "no", title="대한민국 범죄분류와 범행시 정신상태(2015)")
+plot(crime_2015_ca, cex=0.7, autoLab = "no", ylim=c(-0.7,1), xlim=c(-0.3,1))
+```
+
+

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <title>Software Carpentry: 데이터 과학</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-59802572-17', 'auto');
+      ga('send', 'pageview');
+    
+    </script>
+  </head>
+  <body class="lesson">
+    <div class="container card">
+      <div class="banner">
+        <a href="http://software-carpentry.org" title="Software Carpentry">
+          <img alt="Software Carpentry banner" src="img/software-carpentry-banner.png" />
+        </a>
+      </div>
+      <article>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <h1 class="title">데이터 과학</h1>
+          
+<p><img src="fig/ct-unplugged-4th-paradigm-korea.png" width="57%" /></p>
+<section class="challenge panel panel-success">
+<div class="panel-heading">
+<h3 id="기계와의-경쟁을-준비하며"><span class="glyphicon glyphicon-pencil"></span>기계와의 경쟁을 준비하며…</h3>
+</div>
+<div class="panel-body">
+<p>“The future is here, it’s just not evenly distributed yet.”<br />
+- William Gibson</p>
+</div>
+</section>
+<h3 id="r-rstudio-tidyverse-스파크-aws-와-함께하는-데이터-과학">R, RStudio, <code>tidyverse</code>, 스파크, AWS 와 함께하는 데이터 과학</h3>
+<ol style="list-style-type: decimal">
+<li><strong><a href="ds-r-lang.html">데이터 과학과 R 언어</a></strong>
+<ul>
+<li><a href="ds-r-reprex.html">도와줘요 - <code>reprex</code></a></li>
+<li><a href="ds-r-environment.html">R 환경설정과 업데이트, 파일-객체 크기</a></li>
+<li><a href="ds-r-tidyeval.html">R 구문평가 - tidyeval</a></li>
+<li><a href="ds-r-license.html">R 저작권과 라이선스(license)</a></li>
+<li><a href="ds-writing-fn.html">R 프로그래밍 모범사례 - R 함수와 자료구조</a></li>
+<li><a href="ds-datasharing.html">통계학 전공자와 데이터 공유 방법</a> : <a href="https://github.com/jtleek/datasharing">영어원문</a>, <a href="ds-datasharing-translation.html">구글 번역본</a></li>
+<li><a href="http://statkclee.github.io/capstone-novice-spreadsheet-biblio/">스프레드쉬트에서 데이터베이스로</a>
+<ul>
+<li><a href="ds-why-not-excel.html">위기의 스프레드쉬트</a></li>
+<li><a href="ds-xls.html">탈옥(jailbreakr) – 엑셀에서 탈출… 자유</a><br />
+</li>
+<li><a href="http://statkclee.github.io/capstone-novice-spreadsheet-biblio/01-intro.html">들어가며</a></li>
+<li><a href="http://statkclee.github.io/capstone-novice-spreadsheet-biblio/02-extract.html">데이터 추출</a></li>
+<li><a href="http://statkclee.github.io/capstone-novice-spreadsheet-biblio/03-db.html">데이터베이스에 데이터 저장</a></li>
+</ul></li>
+</ul></li>
+<li><a href="ds-data-structure.html">측도와 R 자료구조</a>
+<ul>
+<li><strong>자료구조</strong>
+<ul>
+<li><a href="https://statkclee.github.io/finance/">날짜/시간 데이터</a>: <strong><code>2018-06-23</code>일부터 금융, 시계열로 이동</strong></li>
+<li><a href="ds-factor-cdata.html">요인(Factor) - 범주형 자료형</a>
+<ul>
+<li><a href="ds-factor-stat545.html">요인자료형 달인 - STAT545</a></li>
+<li><a href="ds-factor-dplyr-mosaic.html">범주형 데이터 시각화 기초</a></li>
+</ul></li>
+</ul></li>
+<li><a href="ds-missing.html">결측데이터</a></li>
+<li><a href="data-handling-sql.html">R과 SQL - <code>DBI</code>, <code>dplyr</code></a>
+<ul>
+<li><a href="https://statkclee.github.io/sql-ecology-lesson/">데이터 카펜트리 SQL 학습교재(생태학, ecology)</a></li>
+</ul></li>
+<li><a href="ds-dplyr-sql.html"><code>dplyr</code> 데이터베이스</a><br />
+</li>
+<li><a href="ds-tidyverse-spark.html">빅데이터 - <code>tidyverse</code> 스파크</a>
+<ul>
+<li><a href="http://statkclee.github.io/ml/ml-random-sampling.html">대용량 데이터 표본추출</a><br />
+</li>
+<li><a href="data-handling-datatable.html">데이터테이블</a></li>
+</ul></li>
+</ul></li>
+<li><strong>데이터 정제(Data Cleaning)</strong>
+<ul>
+<li><a href="ds-janitor.html">데이터 과학자가 아니라 청소부</a></li>
+</ul></li>
+<li><a href="ds-tidyverse.html"><code>tidyverse</code> 데이터 과학 기본체계</a>
+<ul>
+<li><a href="data-handling-pipeline.html">데이터분석 파이프라인</a></li>
+<li><a href="data-handling-tidyr.html">데이터 깔끔화(tidyr)</a></li>
+<li><a href="data-handling-dplyr.html">데이터 작업 공구(dplyr)</a>
+<ul>
+<li><a href="data-handling-multiplyr.html">데이터 병렬 작업 공구(multiplyr)</a></li>
+<li><a href="data-handling-tidytext.html">텍스트 작업 공구(tidytext)</a></li>
+<li><a href="data-handling-tidyquant.html">시계열 데이터 작업 공구(tidyquant)</a></li>
+</ul></li>
+<li><a href="ds-dplyr-join.html">두 테이블 동사(dplyr join)</a></li>
+<li><a href="data-handling-export.html">데이터 내보내기</a></li>
+<li><a href="ds-manip-multiple-data.html">데이터 다수 다루기 - 파케이</a><br />
+</li>
+</ul></li>
+<li><a href="ds-broom-tidy-model.html">깔끔한 데이터와 모형 – <code>broom</code></a>
+<ul>
+<li><a href="ds-viz-un.html">UN 투표 데이터를 통해 본 한국과 주변 강대국</a></li>
+</ul></li>
+<li><strong>R 개발 환경 인프라</strong> <a href="http://statkclee.github.io/raspberry-pi/raspberry-pi-programming-science.html">데이터 과학 툴체인 - 파이썬</a>
+<ul>
+<li><strong><a href="rstudio-project.html">RStudio 개발환경 - 프로젝트</a></strong>
+<ul>
+<li><a href="rstudio.html">RStudio 개발환경(IDE)과 단축키</a></li>
+<li><a href="ds-virtual-window.html">윈도우 환경 가상 R 개발환경</a></li>
+<li><a href="toolchain-shiny-rstudio.html">한글처리 가능한 RStudio 개발환경</a><br />
+</li>
+</ul></li>
+<li><strong><a href="http://statkclee.github.io/parallel-r/spark-mooc.html">스파크(Spark)</a></strong>
+<ul>
+<li><a href="ds-spark-hadoop-install.html">SparkR 하둡 클러스터 설치</a></li>
+<li><a href="ds-h2o-spark-hadoop.html"><span class="math inline">\(H_2 O\)</span> 하둡 스파크 클러스터 설치</a></li>
+</ul></li>
+<li><a href="toolchain-docker-basic.html">도커(Docker) 기초</a>
+<ul>
+<li><a href="toolchain-docker-dockerfile.html">도커(Docker) - Dockerfile</a></li>
+<li><a href="toolchain-docker-r.html">데이터 과학 도커 - R</a><br />
+</li>
+<li><a href="toolchain-docker-r-pkgs.html">데이터 과학 도커 - R 팩키지</a><br />
+</li>
+</ul></li>
+<li><a href="toolchain-ci-travis.html">지속적 통합(CI) - Travis</a><br />
+</li>
+<li><a href="toolchain-travis-github.html">지속적 통합(CI) - GitHub</a></li>
+<li><a href="ds-windows-bash.html">윈도우 10 - 우분투 배쉬</a></li>
+</ul></li>
+<li><a href="r-pkg-hello-world.html">R 팩키지 - 헬로우 월드</a>
+<ul>
+<li><a href="data-science-library.html"><code>tidyverse</code> 기반 R 팩키지와 라이브러리</a></li>
+<li><a href="r-pkg-suggestK.html">연관검색어 팩키지 - <code>suggestK</code></a></li>
+<li><a href="r-pkg-cran.html">CRAN 팩키지 제출</a></li>
+</ul></li>
+<li><strong><a href="https://statkclee.github.io/ingest-data/">다양한 데이터</a></strong>
+<ul>
+<li><a href="https://statkclee.github.io/spatial/">공간통계 - 지리정보</a></li>
+<li><strong>R 눈을 달다</strong>
+<ul>
+<li><a href="ds-extract-text-from-pdf.html">pdf 파일 데이터 추출</a></li>
+<li><a href="ds-extract-text-from-pdf-survey.html">PDF 감옥에서 데이터를 탈출시키다.</a></li>
+</ul></li>
+<li><a href="ds-packet.html">보안 - 패킷분석</a></li>
+</ul></li>
+<li><a href="data-handling-sorting.html">정렬(Sort)</a></li>
+</ol>
+<section class="prereq panel panel-warning">
+<div class="panel-heading">
+<h2 id="참고-자료"><span class="glyphicon glyphicon-education"></span>참고 자료</h2>
+</div>
+<div class="panel-body">
+<ul>
+<li><a href="http://unplugged.xwmooc.org">컴퓨터 과학 언플러그드</a><br />
+</li>
+<li><a href="http://reeborg.xwmooc.org">리보그</a>
+<ul>
+<li><a href="http://rur-ple.xwmooc.org">러플</a><br />
+</li>
+</ul></li>
+<li><a href="http://swcarpentry.github.io/python-novice-turtles/index-kr.html">파이썬 거북이</a><br />
+</li>
+<li><a href="http://python.xwmooc.org">정보과학을 위한 파이썬</a><br />
+</li>
+<li><a href="http://statkclee.github.io/swcarpentry-version-5-3-new/">소프트웨어 카펜트리 5.3</a>
+<ul>
+<li><a href="http://swcarpentry.xwmooc.org">소프트웨어 카펜트리 5.2</a></li>
+</ul></li>
+<li><a href="http://r-pkgs.xwmooc.org/">R 팩키지</a></li>
+<li><a href="http://think-stat.xwmooc.org/">통계적 사고</a></li>
+<li><a href="http://raspberry-pi.xwmooc.org/">IoT 라즈베리파이</a>
+<ul>
+<li><a href="http://computer.xwmooc.org/">$100 오픈 컴퓨터</a><br />
+</li>
+<li><a href="http://computers.xwmooc.org/">$100 오픈 슈퍼컴퓨터</a></li>
+</ul></li>
+</ul>
+</div>
+</section>
+        </div>
+      </div>
+      </article>
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
+        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/lesson-template">Source</a>
+        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+  </body>
+</html>
