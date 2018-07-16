@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 1. [object 삽입 및 문제해결](ds001-rlang.html)
 1. [R 환경설정, 파일-객체 크기](ds002-r-environment.html) 
-
+1. [R 구문](ds003-r-tidyeval.html)
 
 
 
