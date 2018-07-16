@@ -1,7 +1,6 @@
 ---
 layout: page
-title: 데이터 과학
-subtitle: 데이터 과학과 R 언어
+title: "ds001-rlang"
 output:
   html_document: 
     theme: journal
@@ -13,16 +12,17 @@ output:
 mainfont: NanumGothic
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 
 ``` {r, include=FALSE}
-source("tools/chunk-options.R")
-knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 
 # 0. 환경설정 --------------
 library(timelineS) # devtools::install_github("daheelee/timelineS")
 library(tidyverse)
 library(lubridate)
-library(googleVis)
 
 Sys.setenv(TZ='Asia/Seoul')
 
@@ -59,16 +59,20 @@ rhistory_df <- tribble(
 > * R 언어 시작과 끝을 맛본다.
 
 
-
-# 1. 데이터 과학 (Data Science) {#data-science}
+# 그림 삽입{#insert-figure}
 
 
 <img src="fig/data-science-overview.png" alt="데이터 과학 개요" width="70%" />
 
+
+# 주석 삽입{#insert-reference}
+
 데이터 마이닝 모형이었다. [^crisp-dm-kor]
 
 [^crisp-dm-kor]: [데이터 마이닝 방법론/프로세스 CRISP-DM](http://itlab.tistory.com/122)
+입
 
+# 연대기 표 삽입{#insert-yearly}
 
 ``` {r rhistory, fig.width=12}
 # 1. R 역사 연대기 표 --------------
@@ -86,47 +90,32 @@ timelineS(rhistory_df, main = "R 연대기", buffer.days = 3600,
 ```
 
 
-# 4. 두 언어 문제 [^Ousterhout-dichotomy] {#two-language-problem}
+# 웹데이터 읽기 {#webdata-read}
 
-<iframe width="320" height="200" src="https://www.youtube.com/embed/B9moDuSYzGo" frameborder="0" allowfullscreen></iframe>
-
-
-# 6. R 시작과 끝 (맛보기) {#r-a-bit-taste}
-
-R이 설치되고, 필요한 패키지가 준비되면 분석에 사용할 데이터를 작업 메모리상에 올려야 한다. 
-분석 데이터를 R 작업공간에 준비하는 방법은 어려가지가 있다. 
-Web URL을 활용한 웹 데이터를 가져오거나, `read.table`을 이용한 로컬 디스크 상의 데이터를 메모리로 불러올 수 있다.
 
 ``` {r r-lang-import, message=FALSE, warning=FALSE, comment=FALSE}
 abalone <- read.csv(url("http://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data"), header=F)
 names(abalone) <- c("Sex","Length","Diameter","Height","Whole weight","Shucked weight","Viscera weight","Shell weight","Rings")
 head(abalone)
-#   Sex Length Diameter Height Whole weight Shucked weight  Viscera weight Shell weight Rings
-# 1   M  0.455    0.365  0.095       0.5140         0.2245          0.1010        0.150    15
-# 2   M  0.350    0.265  0.090       0.2255         0.0995          0.0485        0.070     7
-# 3   F  0.530    0.420  0.135       0.6770         0.2565          0.1415        0.210     9
-# 4   M  0.440    0.365  0.125       0.5160         0.2155          0.1140        0.155    10
-# 5   I  0.330    0.255  0.080       0.2050         0.0895          0.0395        0.055     7
-# 6   I  0.425    0.300  0.095       0.3515         0.1410          0.0775        0.120     8
 ```
 
 
-어느 소프트웨어도 마찬가지지만 사용하다보면 오류가 발생하고 이를 확인해야 할 때가 있다. 
-`RStudio`의 경우 `Help>Diagnostics>Show log files` 를 통해서 확인가능하다. 
+# 콘솔 정리
 
-작업을 하다면 콘솔화면을 깨끗이하고 다시 시작하고 싶은 경우가 있다. 
-윈도나 도스의 경우 `cls` 명령어가 있는데 R에는 딱히 그런 명령어가 없다. 이런 경우 사용자 정의 함수를 하나 만들어서 실행할 수 있다. 
+__함수로 구현__
+
+초기 실행 환경파일(`C:\Program Files\R\R-3.1.0\library\base\R\RProfile`)에 포함
 
 ``` {r r-lang-cls}
 cls <- function() cat(rep("\n",50))
 cls()
 ```
 
-하지만, 매번 R을 실행할 때마다 반복적으로 해야되기 때문에 R이 시작될 때 자동으로 설정을 하는 방법은 초기 실행 환경파일에 이를 적용하는 것이다. 
-`C:\Program Files\R\R-3.1.0\library\base\R\RProfile` 파일을 텍스트 편집기로 열어 하단에 `cls` 함수를 적어두고 저장한다. 
-혹은, `CTRL+L` 키를 눌러 화면을 깨끗이하며 커서를 맨 위 상단으로 이동한다.
+__`CTRL+L` 키__
 
-``` {r r-lang-cls-rprofile}
+화면을 깨끗이하며 커서를 맨 위 상단으로 이동한다.
+
+```{r r-lang-cls-rprofile}
 local({
     br <- Sys.getenv("R_BROWSER", NA_character_)
     if(!is.na(br)) options(browser = br)
@@ -136,5 +125,4 @@ local({
 
 # 사용자 정의함수
 cls <- function() cat(rep("\n",50))
-``` 
-
+```
