@@ -1,7 +1,13 @@
 ---
 title: "R 개발자를 위한 tip 모음"
-layout: page
+output: html_document
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
 
 
 ## 목차
