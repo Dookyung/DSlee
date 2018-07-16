@@ -12,7 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 목차
 
-1. **[데이터 과학과 R 언어](ds001-ds-rlang.html)**
+1. [object 삽입 및 문제해결](ds001-rlang.html)
+1. [R 환경설정, 파일-객체 크기](ds002-r-environment.html) 
 
 
 
