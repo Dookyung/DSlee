@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## 목차
 
-1. **[데이터 과학과 R 언어](#001_ds-r-lang.html)**
+1. **[데이터 과학과 R 언어](ds001-ds-rlang.html)**
 
 
 
