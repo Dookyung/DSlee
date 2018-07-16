@@ -3,12 +3,6 @@ layout: page
 title: 데이터 과학
 ---
 
-<img src="fig/ct-unplugged-4th-paradigm-korea.png" width="57%" />
-
-> ### 기계와의 경쟁을 준비하며... {.challenge}
-> "The future is here, it's just not evenly distributed yet."  
->                                                           - William Gibson
-
 ### R, RStudio, `tidyverse`, 스파크, AWS 와 함께하는 데이터 과학 
 
 1. **[데이터 과학과 R 언어](ds-r-lang.html)**
@@ -81,6 +75,7 @@ title: 데이터 과학
 
 > ## 참고 자료 {.prereq}
 > 
+>
 > - [컴퓨터 과학 언플러그드](http://unplugged.xwmooc.org)  
 > - [리보그](http://reeborg.xwmooc.org)  
 >      - [러플](http://rur-ple.xwmooc.org)  

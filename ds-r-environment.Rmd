@@ -14,34 +14,13 @@ mainfont: NanumGothic
 ``` {r, include=FALSE}
 source("tools/chunk-options.R")
 ```
-> ## 학습 목표 {.objectives}
->
-> * R 업그레이드할 때 필요한 사항을 숙지한다.
-> * R 코어엔진, RStudio 통합개발환경, 팩키지에 대해 이해한다.
-> * R 시작할 때 반복적으로 실행하는 작업을 자동화한다.
 
 ## 1. R, RStudio, 팩키지 업그레이드 [^r-packages-update] {#r-upgrade}
 
-적어도 1년에 한번 새로운 버젼 R 엔진이 출시되면 연례행사로 신경을 써야 되는 부분이 된다.
-R 엔진이 업그레이드 되면서 3.4.0 버젼의 경우 속도 향상 및 버그 수정을 주요 기능으로 내세우고 있다.
-관련하여 R 엔진을 업그레이드 하면서 연관된 작업도 살펴보고 한번에 일괄작업하는 방법을 살펴본다.
-R엔진이 업그레이드 되면 영향을 받는 것은 RStudio IDE(통합개발환경)과 팩키지가 바로 영향을 받게된다.
-
 R 엔진이 올라가는 운영체제에 따라 R 엔진을 설치하는 방법도 숙지해야 한다. 왜냐하면, R을 더이상 설문조사나 전통적인 통계분야 외에 기계학습, 인공지능, 이미지 처리, 공간정보 등 다양한 영역에서 활용하는데 더이상 윈도우 운영체제로는 비용을 떠나 답이 없다. 그래서 리눅스 환경에서 사용해야 하는데 리눅스도 상업적 목적에 특화된 레드햇계열과 전통적으로 R과 친숙한 우분투 계열 모두 설치하고 업그레이드를 할 수 있어야만 된다.
 
-[^r-packages-update]: [How to Upgrade R Without Losing Your Packages from Data Science Riot!](https://www.datascienceriot.com/how-to-upgrade-r-without-losing-your-packages/kris/)
-
-
-<img src="fig/library-r-rstudio-upgrade.png" alt="R 업그레이드" width="77%" />
 
 ## 2. R 엔진 업그레이드 [^r-upgrade] [^r-upgrade-3-4] {#r-engine-upgrade}
-
-[^r-upgrade]: [R 3.2.4 is released](http://www.r-bloggers.com/r-3-2-4-is-released/)
-
-[^r-upgrade-3-4]: [R 3.4.0 is released – with new speed upgrades and bug-fixes](https://www.r-statistics.com/2017/04/r-3-4-0-is-released-with-new-speed-upgrades-and-bug-fixes/)
-
-R 버젼이 3.2.3(2015-12-10) 에서 3.2.4(2016-03-10)로 4개월만에 업그레이드가 되었고,
-얼마 지나지 않아 3.4.0(코드명  “You Stupid Darkness”) 버젼이 17년 4월 출시되었고, 속도가 비약적으로 향상되었다.
 
 ### 2.1. R 버젼확인  {#r-engine-upgrade-version}
 
