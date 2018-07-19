@@ -15,6 +15,20 @@ knitr::opts_chunk$set(echo = TRUE)
 1. [object 삽입 및 문제해결](ds001-rlang.html)
 1. [R 환경설정, 파일-객체 크기](ds002-r-environment.html) 
 1. [R 구문](ds003-r-tidyeval.html)
+1. [R license](ds004-r-license.html)
+1. [R function](ds005-writing-function.html)
+1. [Data sharing](ds006-data-sharing.html)
+1. [Spreadsheet](ds007-spreadsheet.html)
+1. [Data structure](ds008-data-structure.html)
+1. [R & SQL](ds009-r-sql.html)
+1. [tidyverse & spark](ds010-tidyverse-spark.html)
+1. [preprocessing](ds011-preprocessing.html)
+1. [tidyverse](ds012-tidyverse.html)
+
+
+1. [finance](https://statkclee.github.io/finance/)
+
+
 
 
 

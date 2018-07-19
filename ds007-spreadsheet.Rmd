@@ -1,0 +1,81 @@
+---
+layout: page
+title: "ds007-spreadsheet"
+output:
+  html_document: 
+    theme: journal
+    toc: yes
+    toc_depth: 2
+    toc_float: true
+    highlight: tango
+    code_folding: show
+mainfont: NanumGothic
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 스프레드쉬트를 버려야 하는 6가지 이유 
+
+
+> #### 스프레드쉬트를 사용하는 이유
+> 
+> * 항상 엑셀을 사용해고 쉽다.
+> * 데이터베이스를 사용할 만큼 데이터가 충분하지 않다.
+
+1. 한번에 한사람만 작업이 가능하다.
+1. 데이터 감사는 데이터베이스에서만 가능
+1. 데이터베이스는 정형화된 작업흐름을 지원한다.
+1. 데이터베이스는 엑셀보다 모형을 보다 잘 지원한다.
+1. 데이터베이스로 보고서 생성이 수월하다.
+1. 데이터베이스는 보안이 강력하고 규제하기 좋다.
+
+
+__스프레드쉬트 참사__
+
+[THE DIRTY DOZEN 12 MODELLING HORROR STORIES & SPREADSHEET DISASTERS](http://blogs.mazars.com/the-model-auditor/files/2014/01/12-Modelling-Horror-Stories-and-Spreadsheet-Disasters-Mazars-UK.pdf)
+
+[6 Reasons It’s Time To Stop Using Excel As A Database](http://venasolutions.com/blog/2014/08/6-reasons-its-time-to-stop-using-excel-as-a-database/)
+
+
+
+
+<iframe src="https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/jailbreakr-Get-out-of-Excel-free/player" width="480" height="270" allowFullScreen frameBorder="0"></iframe>
+
+### 탈옥
+
+엑셀로 대표되는 스프레드쉬트는 가장 많은 사람들이 사용하는 데이터 분석 및 숫자형 데이터 처리를 위해 사용하는 도구다. 사실 애플 컴퓨터가 대중화 되는데 있어 가장 많은 기여를 한 것도 [비지캘크(VisiCalc)](https://en.wikipedia.org/wiki/VisiCalc) 라는 스프레드쉬트다. 전세계적으로 R 사용자는 백만명이 되지 않을 것으로 추산된다.
+
+|   데이터 분석 도구    |       사용자 수       |
+|-----------------------|-----------------------|
+| 마이크로소프트 오피스 |     10 억명           |
+|  스프레드쉬트(엑셀)   |    6억 5천만명        |
+|   수식(formulas) 사용 |       50% &uarr;      |
+|      파이썬           |   백만 ~ 오백만명     |
+|        R              |     25만 ~ 백만명     |
+
+
+
+스프레드쉬트와 R을 비교해 보면, 서로 상응하는 기능이 일대일로 대응되는 것을 확인할 수 있다.
+
+|    **스프레드쉬트**      |          **R**               |
+|--------------------------|------------------------------|
+| * 데이터                 | * 데이터                     |
+| * 로직                   | * .R, .Rmd                   |
+| * 그림                   | * .png, .svg                 |
+| * 서식을 갖춘 표         | * .md, .html, .pdf, Shiny 앱 |
+| * **반응성(reactivity)** | * **빌드와 배포**            |
+
+이런 스프레드쉬트 문제점을 극복하기 위해서 다양한 시도가 진행되고 있다.
+
+* 차세대 스프레드쉬트 응용프로그램을 개발: [Stencila](https://stenci.la/), [AlphaSheets](http://www.alphasheets.com/), [Pyspread](https://manns.github.io/pyspread/) 
+* 스프레드쉬트는 그대로 두고, 스프레드쉬트에서 좋은 것을 뽑아내거나 다시 되돌리는 시도
+    * readxl: [CRAN](https://cran.r-project.org/web/packages/readxl/index.html)
+    * openxlsx: [CRAN](https://cran.r-project.org/web/packages/openxlsx/index.html)
+    * XLConnect: [CRAN](https://cran.r-project.org/web/packages/XLConnect/index.html)
+    * gdata: [CRAN](https://cran.r-project.org/web/packages/gdata/index.html)
+    * xlsx: [CRAN](https://cran.r-project.org/web/packages/xlsx/index.html)
+    * RODBC: [CRAN](https://cran.r-project.org/web/packages/RODBC/index.html)

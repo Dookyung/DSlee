@@ -1,0 +1,188 @@
+---
+layout: page
+title: "ds008-data-structure"
+output:
+  html_document: 
+    theme: journal
+    toc: yes
+    toc_depth: 2
+    toc_float: true
+    highlight: tango
+    code_folding: show
+mainfont: NanumGothic
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+## 자료구조 기본
+
+R에서 기본으로 사용하는 벡터 자료형은 **원자 벡터(Atomic Vector)** 와 **리스트(List)** 로 나눠진다.
+원자 벡터에는 6가지 자료형이 있고, logical, integer, double, character, complex, raw, 총 6 개가 있으며
+주로, 논리형, 정수형, 부동소수점형, 문자형, 4가지를 많이 사용한다. 리스트는 재귀 벡터(recursive vector)라고도
+불리는데 리스트는 다른 리스트를 포함할 수 있기 때문이다. 
+
+
+| 자료형(Type)    | 모드(Mode) | 저장모드(Storage Mode) |
+|-----------------|------------|------------------------|
+|  logical        | logical    | logical                |
+|  **integer**    | numeric    | integer                |
+|  **double**     | numeric    | double                 |
+|  complex        | complex    | complex                |
+|  character      | character  | character              |
+|  raw            | raw        | raw                    |
+
+따라서, 원자벡터는 동질적(homogeneous)이고, 리스트는 상대적으로 이질적(heterogeneous)이다. 
+
+모든 벡터는 두가지 성질(Property)을 갖는데, 자료형과 길이로 이를 확인하는데 `typeof()`와 `length()` 함수를 사용해서 확인한다.
+ 
+``` {r fp-data-structure-typeof, warning=FALSE, tidy=FALSE}  
+a <- list(
+    a = 1:3,
+	b = "a string",
+	c = pi,
+	d = list(-1, -5)
+)
+  
+typeof(a)
+length(a)  
+```  
+ 
+
+``` {r fp-data-structure-mode, warning=FALSE, tidy=FALSE}  
+sapply(a, mode)
+sapply(a, class)
+```
+
+``` {r fp-data-structure-subset, warning=FALSE, tidy=FALSE}  
+str(a[4])
+str(a[[4]])
+```
+
+
+리스트는 이질적인 객체를 담을 수 있다는 점에서 동질적인 것만 담을 수 있어 한계가 있는 원자벡터보다 쓰임새가 다르다.
+회귀분석 결과 산출되는 `lm` 결과값은 다양한 정보를 담을 수 있는 리스트로 표현된다.
+
+* 리스트 생성 : `list()`
+* 하위 리스트 추출 : `[`
+* 리스트에 담긴 원소값 추출 : `[[`, `$` &rarr; 연산작업을 통해 위계를 갖는 구조를 제거한다.
+
+
+범주형 자료를 R에 저장하기 위해서 요인(Factor) 클래스를 사용하며 요인 클래스를 사용하여 자료를 저장할 경우 저장공간을 절약할 수 있다. 
+요인은 내부적으로 숫자(value)로 저장을 하고 레이블(value label)을 사용하여 표시하여 저장공간을 절약한다.
+
+날짜와 시간도 중요한 R에서 자주 사용되는 중요한 데이터 자료형으로 별도로 다룬다.
+
+> #### 자료형 확인
+> 
+> * `is.list` : 리스트 형식인 확인
+> * `is.factor` : 팩터 형식인지 확인
+> * `is.numeric` : 숫자형인지 확인
+> * `is.data.frame` : 데이터 프레임형인지 확인
+> * `is.character` : 문자형인지 확인
+
+### `NULL`과 `NA` 결측벡터와 결측값
+
+결측되었다는 없다는 것을 표시하는 방법이 두가지 필요하다.
+
+하나는 벡터가 없다는 `NULL`이고,
+벡터 내부에 값이 결측되었다는 `NA` 다. 
+
+`dataframe$variable <- NULL` 명령문을 사용하면 데이터프레임(`dataframe`)에 
+변수(`variable`)를 날려보내는 효과가 있다.
+
+``` {r fp-data-structure-null, warning=FALSE, tidy=FALSE}  
+# NULL 자료형과 길이
+typeof(NULL)
+length(NULL)
+
+# NA 자료형과 길이
+typeof(NA)
+length(NA)
+```
+
+`NA`의 중요한 특징은 전염된다는 것이다. 즉, `NA`에 연산을 가하면 연산결과는 무조건 `NA`가 된다.
+
+
+``` {r fp-data-structure-na, warning=FALSE, tidy=FALSE}  
+NA + 7
+NA / 7
+NA > 7
+7 == NA
+NA == NA
+```
+
+
+## 데이터프레임(Dataframe)
+
+### 벡터, 행렬, 배열, 데이터프레임
+
+가장 많이 사용되는 논리형, 문자형, 숫자형을 통해 자료분석 및 모형개발을 진행하게 되고, 경우에 따라서 
+동일한 자료형을 모은 경우 이를 행렬로 표현할 수 있고, 행렬을 모아 RGB 시각 데이터를 위한 배열(Array)로 표현한다.
+데이터프레임은 서로 다른 자료형을 모아 넣은 것이다. 
+
+<img src="fig/ds-data-structure-pictogram.png" alt="R 자료구조" width="77%" />
+
+
+### 3.2. 데이터프레임
+
+**R** 은 6가지 기본 벡터로 자료를 저장하지만, 이외에 행렬(matrix), 데이터프레임(data.frame), 리스트(list) 자료구조가 있다.
+<img src="fig/data-handling-list-dataframe.png" alt="리스트와 데이터프레임" width="50%" />
+
+``` {r df-create}
+# 벡터를 정의한다.
+name <- c("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+type <- c("Terrestrial planet", "Terrestrial planet", "Terrestrial planet", 
+          "Terrestrial planet", "Gas giant", "Gas giant", "Gas giant", "Gas giant")
+diameter <- c(0.382, 0.949, 1, 0.532, 11.209, 9.449, 4.007, 3.883)
+rotation <- c(58.64, -243.02, 1, 1.03, 0.41, 0.43, -0.72, 0.67)
+rings <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)
+
+# 벡터를 합쳐서 데이터프레임을 생성
+planets_df <-data.frame(name, type, diameter, rotation, rings)
+```
+
+### 3.2. 범주형, 순서형 자료형
+
+``` {r data-type-ordinal}
+# 범주형
+animals_vector <- c("Elephant", "Giraffe", "Donkey", "Horse")
+factor_animals_vector <- factor(animals_vector)
+factor_animals_vector
+
+# 순위형
+temperature_vector <- c("High", "Low", "High","Low", "Medium")
+factor_temperature_vector <- factor(temperature_vector, order = TRUE, levels = c("Low", "Medium", "High"))
+factor_temperature_vector
+```
+
+``` {r data-type-factor-level}
+# "M", "F" 수준
+survey_vector <- c("M", "F", "F", "M", "M")
+factor_survey_vector <- factor(survey_vector)
+levels(factor_survey_vector)
+
+# "Female", "Male" 로 변환
+levels(factor_survey_vector) <- c("Female", "Male")
+levels(factor_survey_vector)
+```
+
+``` {r data-type-factor-summary}
+# 문자형 벡터와 요인 벡터
+survey_vector <- c("M", "F", "F", "M", "M")
+factor_survey_vector <- factor(survey_vector)
+
+# 문자형 벡터 요약
+summary(survey_vector)
+
+# 요인 벡터 요약
+summary(factor_survey_vector)
+```
+
+

@@ -1,0 +1,45 @@
+---
+layout: page
+title: "ds005-writing-function"
+output:
+  html_document: 
+    theme: journal
+    toc: yes
+    toc_depth: 2
+    toc_float: true
+    highlight: tango
+    code_folding: show
+mainfont: NanumGothic
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 통계학 자에게 전달해야 할 사항
+
+1. 원시 데이터.
+1. [정돈 된 데이터 세트](http://vita.had.co.nz/papers/tidy-data.pdf)
+1. 깔끔한 데이터 세트의 각 변수와 그 값을 설명하는 코드 북.
+1. 1에서 2,3까지 갔던 명쾌하고 정확한 레시피
+
+### 2.2. 깔끔한 데이터 세트
+
+깔끔한 데이터의 일반적인 원칙은 [Hadley Wickham](http://had.co.nz/)이 
+정리한 [논문(tidy data)](http://vita.had.co.nz/papers/tidy-data.pdf)과 
+[비디오](http://vimeo.com/33727555)에서 자세한 내용을 참조할 수 있습니다. 
+종이와 비디오 모두 [R](http://www.r-project.org/)를 사용하여 깔끔한 데이터를 설명하지만, 원칙
+더 일반적으로 적용 할 수 있습니다 :
+
+1. 측정하는 각 변수는 하나의 열에 있어야합니다
+1. 변수의 관찰 결과가 다른 행에 있어야합니다.
+1. 변수의 "종류"마다 하나의 테이블이 있어야합니다.
+1. 여러 테이블이있는 경우 테이블에 조인 또는 병합 할 수있는 열을 포함해야합니다
+
+### 2.3. 코드 북
+
+1. 깔끔한 데이터에 포함되지 않은 데이터 세트의 변수 (단위 포함!)에 대한 정보
+1. 요약 선택 사항에 대한 정보
+1. 사용한 실험 연구 디자인에 대한 정보

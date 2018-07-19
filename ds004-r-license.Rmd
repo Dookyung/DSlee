@@ -1,0 +1,88 @@
+---
+layout: page
+title: "ds001-rlang"
+output:
+  html_document: 
+    theme: journal
+    toc: yes
+    toc_depth: 2
+    toc_float: true
+    highlight: tango
+    code_folding: show
+mainfont: NanumGothic
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE}
+library(tidyverse)
+library(DT)
+```
+
+
+일반적으로 많이 사용되는 라이선스
+
+- The “GNU Affero General Public License” version 3
+- The “Artistic License” version 2.0
+- The “BSD 2-clause License”
+- The “BSD 3-clause License”
+- The “GNU General Public License” version 2
+- The “GNU General Public License” version 3
+- The “GNU Library General Public License” version 2
+- The “GNU Lesser General Public License” version 2.1
+- The “GNU Lesser General Public License” version 3
+- The “MIT License”
+- The “Creative Commons Attribution-ShareAlike International License” version 4.0
+
+
+
+
+```{r data-science-license}
+pkg_df <- installed.packages() %>% as_tibble()
+
+pkg_df %>% mutate(
+    license_chk = 
+        case_when(
+            str_detect(License, "GPL") ~ "GPL",
+            str_detect(License, "MIT") ~ "MIT",
+            str_detect(License, "Part of R 3.4.2") ~ "GPL",
+            str_detect(License, "LGPL") ~ "LGPL",
+            str_detect(License, "BSD") ~ "BSD",
+            str_detect(License, "MPL") ~ "MPL",
+            str_detect(License, "Apache") ~ "Apache",
+            str_detect(License, "Unlimited|CC0|CC BY") ~ "CC",
+            str_detect(License, "Lucent Public License") ~ "Lucent Public",
+            str_detect(License, "file LICENSE") ~ "file LICENSE",
+            str_detect(License, "BSL") ~ "Boost Software License"
+        )
+    ) %>% 
+    count(license_chk, sort=TRUE) %>% 
+    mutate(`비율` = n / sum(n),
+           `누적비` = cumsum(`비율`)) %>% 
+    select(`라이선스`=license_chk, `팩키지수`=n, everything()) %>%
+	DT::datatable() %>% 
+      formatPercentage(c("비율", "누적비"), digits=1)
+```
+
+팩키지에 대한 오픈소스 라이선스 구체적인 정보는 다음과 같다.
+
+```{r data-science-license-detail}
+pkg_df %>% 
+    select(Package, Version, License, License_is_FOSS, Depends) %>% 
+    datatable() 
+```
+
+
+
+
+
+
+
+
+
+
+
+
